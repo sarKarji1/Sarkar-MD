@@ -54,9 +54,15 @@ Matrix.on('status-update', async (status) => {
       await Matrix.sendReadReceipt(status.jid, status.participant, [status.key]);
       console.log(`✅ Status seen for: ${status.participant}`);
 
-      // Step 2: Send Reaction (if configured)
-      const reactionEmoji = config.AUTO_STATUS_REACTION || '👍'; // Default reaction
-      await Matrix.sendMessage(status.jid, { react: { text: reactionEmoji, key: status.key } });
+      // Step 2: Send Reaction (Status Reaction for WhatsApp)
+      const reactionEmoji = config.AUTO_STATUS_REACTION || '❤️'; // Default reaction
+      await Matrix.sendMessage(status.jid, {
+        react: {
+          text: reactionEmoji, // Emoji to react with
+          key: status.key, // The status key to react to
+        },
+      });
+
       console.log(`✅ Reacted with '${reactionEmoji}' to status of: ${status.participant}`);
     } catch (error) {
       console.error("❌ Error processing status reaction:", error);
